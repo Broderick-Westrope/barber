@@ -1,6 +1,10 @@
 package cmd
 
-import "github.com/spf13/cobra"
+import (
+	"fmt"
+
+	"github.com/spf13/cobra"
+)
 
 var rootCmd = &cobra.Command{
 	Use:   "barber",
@@ -10,6 +14,7 @@ var rootCmd = &cobra.Command{
 			Documentation is available at https://github.com/Broderick-Westrope/barber`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// TODO: Launch interactive mode
+		fmt.Println("Interactive mode not yet implemented")
 	},
 }
 

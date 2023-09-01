@@ -1,0 +1,4 @@
+# aliases
+alias cls='clear'
+
+# 

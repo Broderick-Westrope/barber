@@ -20,4 +20,8 @@
 # Go workspace file
 go.work
 
+# Files that may be created when testing the app
 .barber.yaml
+
+# Build directory
+build/

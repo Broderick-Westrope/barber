@@ -1,0 +1,26 @@
+version: '3'
+
+tasks:
+  build:
+    desc: "build the compiled binary"
+    cmds:
+      - mkdir -p build
+      - go build -o ./build/ .
+  test:
+    desc: "run all unit tests"
+    cmds:
+      - go test ./... -cover {{.CLI_ARGS}}
+  lint:
+    desc: "lint the code"
+    cmds:
+      - golangci-lint run
+  run:
+    desc: "run the app"
+    cmds:
+      - go run . {{.CLI_ARGS}}
+  pcc:
+    desc: "run several pre-commit checks"
+    cmds:
+      - task: build
+      - task: test
+      - task: lint

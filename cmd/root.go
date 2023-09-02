@@ -6,6 +6,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Flags. These are set in the init() function of each command.
+var skipConfirm bool
+
+var metadataFile = ".barber.yaml"
+
 var rootCmd = &cobra.Command{
 	Use:   "barber",
 	Short: "Barber is a tool for managing snippets",

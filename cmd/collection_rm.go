@@ -27,25 +27,27 @@ func init() {
 }
 
 func removeCollection() {
-	if _, err := os.Stat(metadataFile); os.IsNotExist(err) {
+	_, err := os.Stat(metadataFile)
+	if os.IsNotExist(err) {
 		fmt.Printf("'%s' file does not exist\n", metadataFile)
 		return
 	} else if err != nil {
 		log.Fatalf("Failed to check if '%s' file exists: %v", metadataFile, err)
+	}
+
+	if skipConfirm {
+		internal.RemoveFile(metadataFile)
+		return
+	}
+
+	fmt.Printf("Are you sure you want to remove '%s' file? [y/N] ", metadataFile)
+	var response string
+	if _, err = fmt.Scanln(&response); err != nil {
+		log.Fatalf("Failed to read user input: %v", err)
+	}
+	if response == "y" || response == "Y" {
+		internal.RemoveFile(metadataFile)
 	} else {
-		if skipConfirm {
-			internal.RemoveFile(metadataFile)
-		} else {
-			fmt.Printf("Are you sure you want to remove '%s' file? [y/N] ", metadataFile)
-			var response string
-			if _, err := fmt.Scanln(&response); err != nil {
-				log.Fatalf("Failed to read user input: %v", err)
-			}
-			if response == "y" || response == "Y" {
-				internal.RemoveFile(metadataFile)
-			} else {
-				fmt.Printf("'%s' file was not removed\n", metadataFile)
-			}
-		}
+		fmt.Printf("'%s' file was not removed\n", metadataFile)
 	}
 }

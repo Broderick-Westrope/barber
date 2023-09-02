@@ -32,7 +32,7 @@ func resetCollection() {
 		log.Fatalf("Failed to check if '%s' file exists: %v", metadataFile, err)
 	} else {
 		fmt.Printf("Found '%s' file. Resetting it...\n", metadataFile)
-		if err := internal.CreateMetadataFile(metadataFile); err != nil {
+		if err = internal.CreateMetadataFile(metadataFile); err != nil {
 			log.Fatalf("Failed to reset '%s' file: %v", metadataFile, err)
 		}
 		fmt.Printf("Reset '%s' file\n", metadataFile)

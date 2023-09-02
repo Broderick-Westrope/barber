@@ -1,12 +1,19 @@
 package cmd
 
-import "github.com/spf13/cobra"
+import (
+	"log"
+
+	"github.com/spf13/cobra"
+)
 
 var collectionCmd = &cobra.Command{
 	Use:   "collection",
 	Short: "Manage snippet collections",
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.Help()
+		err := cmd.Help()
+		if err != nil {
+			log.Fatalf("Failed to display help: %v", err)
+		}
 	},
 }
 

@@ -28,31 +28,49 @@ func init() {
 }
 
 func initCollection() {
-	// Check if git repository exists, if not, initialize a new one
 	_, err := git.PlainOpen(".")
-	if err == git.ErrRepositoryNotExists {
+	switch {
+	case errors.Is(err, git.ErrRepositoryNotExists):
 		fmt.Println("Initializing a new git repository...")
-		_, err := git.PlainInit(".", false)
+		_, err = git.PlainInit(".", false)
 		if err != nil {
 			log.Fatalf("Failed to initialize git repository: %v", err)
 		}
 		fmt.Println("Git repository initialized")
-	} else if err != nil {
-		log.Fatalf("Failed to open git repository: %v", err)
-	} else {
+	case err == nil:
 		fmt.Println("Git repository already exists")
+	default:
+		log.Fatalf("Failed to open git repository: %v", err)
+	}
+
+	// Check if git repository exists, if not, initialize a new one
+	_, err = git.PlainOpen(".")
+	switch {
+	case errors.Is(err, git.ErrRepositoryNotExists):
+		fmt.Println("Initializing a new git repository...")
+		_, err = git.PlainInit(".", false)
+		if err != nil {
+			log.Fatalf("Failed to initialize git repository: %v", err)
+		}
+		fmt.Println("Git repository initialized")
+	case err == nil:
+		fmt.Println("Git repository already exists")
+	default:
+		log.Fatalf("Failed to open git repository: %v", err)
 	}
 
 	// Check if metadata file exists, if not, create it
-	if _, err = os.Stat(metadataFile); errors.Is(err, fs.ErrNotExist) {
+	_, err = os.Stat(metadataFile)
+	switch {
+	case errors.Is(err, fs.ErrNotExist):
 		fmt.Printf("Creating '%s' metadata file...\n", metadataFile)
-		if err := internal.CreateMetadataFile(metadataFile); err != nil {
+		if err = internal.CreateMetadataFile(metadataFile); err != nil {
 			log.Fatalf("Failed to create metadata file: %v", err)
 		}
 		fmt.Printf("Created '%s' file\n", metadataFile)
-	} else if err != nil {
-		log.Fatalf("Failed to check if '%s' file exists: %v", metadataFile, err)
-	} else {
+	case err == nil:
 		fmt.Printf("'%s' file already exists\n", metadataFile)
+	default:
+		log.Fatalf("Failed to check if '%s' file exists: %v", metadataFile, err)
 	}
 }

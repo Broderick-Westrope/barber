@@ -60,17 +60,17 @@ func initCollection() {
 	}
 
 	// Check if metadata file exists, if not, create it
-	_, err = os.Stat(metadataFile)
+	_, err = os.Stat(defMetadataFile)
 	switch {
 	case errors.Is(err, fs.ErrNotExist):
-		fmt.Printf("Creating '%s' metadata file...\n", metadataFile)
-		if err = internal.CreateMetadataFile(metadataFile); err != nil {
+		fmt.Printf("Creating '%s' metadata file...\n", defMetadataFile)
+		if err = internal.CreateMetadataFile(defMetadataFile); err != nil {
 			log.Fatalf("Failed to create metadata file: %v", err)
 		}
-		fmt.Printf("Created '%s' file\n", metadataFile)
+		fmt.Printf("Created '%s' file\n", defMetadataFile)
 	case err == nil:
-		fmt.Printf("'%s' file already exists\n", metadataFile)
+		fmt.Printf("'%s' file already exists\n", defMetadataFile)
 	default:
-		log.Fatalf("Failed to check if '%s' file exists: %v", metadataFile, err)
+		log.Fatalf("Failed to check if '%s' file exists: %v", defMetadataFile, err)
 	}
 }

@@ -7,11 +7,11 @@ import (
 )
 
 var collectionCmd = &cobra.Command{
-	Use:   "collection",
-	Short: "Manage snippet collections",
+	Use:     "collection",
+	Aliases: []string{"col"},
+	Short:   "Manage snippet collections",
 	Run: func(cmd *cobra.Command, args []string) {
-		err := cmd.Help()
-		if err != nil {
+		if err := cmd.Help(); err != nil {
 			log.Fatalf("Failed to display help: %v", err)
 		}
 	},

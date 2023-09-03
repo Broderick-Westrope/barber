@@ -26,15 +26,15 @@ func init() {
 }
 
 func resetCollection() {
-	if _, err := os.Stat(metadataFile); errors.Is(err, fs.ErrNotExist) {
-		fmt.Printf("'%s' file does not exist\n", metadataFile)
+	if _, err := os.Stat(defMetadataFile); errors.Is(err, fs.ErrNotExist) {
+		fmt.Printf("'%s' file does not exist\n", defMetadataFile)
 	} else if err != nil {
-		log.Fatalf("Failed to check if '%s' file exists: %v", metadataFile, err)
+		log.Fatalf("Failed to check if '%s' file exists: %v", defMetadataFile, err)
 	} else {
-		fmt.Printf("Found '%s' file. Resetting it...\n", metadataFile)
-		if err = internal.CreateMetadataFile(metadataFile); err != nil {
-			log.Fatalf("Failed to reset '%s' file: %v", metadataFile, err)
+		fmt.Printf("Found '%s' file. Resetting it...\n", defMetadataFile)
+		if err = internal.CreateMetadataFile(defMetadataFile); err != nil {
+			log.Fatalf("Failed to reset '%s' file: %v", defMetadataFile, err)
 		}
-		fmt.Printf("Reset '%s' file\n", metadataFile)
+		fmt.Printf("Reset '%s' file\n", defMetadataFile)
 	}
 }

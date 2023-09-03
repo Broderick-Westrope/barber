@@ -9,7 +9,10 @@ import (
 // Flags. These are set in the init() function of each command.
 var skipConfirm bool
 
-var metadataFile = ".barber.yaml"
+const (
+	defMetadataFile = ".barber.yaml"
+	defConfigFile   = ".barber.toml"
+)
 
 var rootCmd = &cobra.Command{
 	Use:   "barber",

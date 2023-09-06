@@ -23,7 +23,7 @@ var colInitCmd = &cobra.Command{
 }
 
 func init() {
-	colInitCmd.Flags().StringP("collection", "c", ".", "path to collection root directory")
+	colInitCmd.Flags().StringVarP(&collection, "collection", "c", ".", "path to collection root directory")
 
 	collectionCmd.AddCommand(colInitCmd)
 }

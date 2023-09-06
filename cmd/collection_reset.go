@@ -19,7 +19,7 @@ var colResetCmd = &cobra.Command{
 }
 
 func init() {
-	colResetCmd.Flags().StringP("collection", "c", ".", "path to collection root directory")
+	colResetCmd.Flags().StringVarP(&collection, "collection", "c", ".", "path to collection root directory")
 	colResetCmd.Flags().BoolVarP(&skipConfirm, "yes", "y", false, "confirm removal without prompting")
 
 	collectionCmd.AddCommand(colResetCmd)

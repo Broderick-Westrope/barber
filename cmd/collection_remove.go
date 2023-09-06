@@ -1,15 +1,14 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
-	"os"
+	"path/filepath"
 
 	"github.com/Broderick-Westrope/barber/internal"
 	"github.com/spf13/cobra"
 )
 
-var collRmCmd = &cobra.Command{
+var colRemoveCmd = &cobra.Command{
 	Use:     "remove",
 	Aliases: []string{"rm"},
 	Short:   "Remove a collection",
@@ -22,33 +21,25 @@ var collRmCmd = &cobra.Command{
 }
 
 func init() {
-	collRmCmd.PersistentFlags().BoolVarP(&skipConfirm, "yes", "y", false, "confirm removal without prompting")
+	colRemoveCmd.PersistentFlags().BoolVarP(&skipConfirm, "yes", "y", false, "confirm removal without prompting")
 
-	collectionCmd.AddCommand(collRmCmd)
+	collectionCmd.AddCommand(colRemoveCmd)
 }
 
+// removeCollection removes a collection by removing the metadata file, and the config file.
+// It does not affect the git repository.
+// It uses the skipConfirm flag to determine if the user should be prompted before removing the metadata files.
 func removeCollection() {
-	_, err := os.Stat(defMetadataFile)
-	if os.IsNotExist(err) {
-		fmt.Printf("'%s' file does not exist\n", defMetadataFile)
-		return
-	} else if err != nil {
-		log.Fatalf("Failed to check if '%s' file exists: %v", defMetadataFile, err)
+	// TODO: Get path from collection flag
+	path := "."
+
+	metadataPath := filepath.Join(path, metadataFilename)
+	if err := internal.DestructiveFileOp(metadataPath, internal.Metadata, skipConfirm, internal.Delete); err != nil {
+		log.Fatalf("Failed to delete '%s' file: %v", metadataPath, err)
 	}
 
-	if skipConfirm {
-		internal.RemoveFile(defMetadataFile)
-		return
-	}
-
-	fmt.Printf("Are you sure you want to remove '%s' file? [y/N] ", defMetadataFile)
-	var response string
-	if _, err = fmt.Scanln(&response); err != nil {
-		log.Fatalf("Failed to read user input: %v", err)
-	}
-	if response == "y" || response == "Y" {
-		internal.RemoveFile(defMetadataFile)
-	} else {
-		fmt.Printf("'%s' file was not removed\n", defMetadataFile)
+	configPath := filepath.Join(path, configFilename)
+	if err := internal.DestructiveFileOp(configPath, internal.Config, skipConfirm, internal.Delete); err != nil {
+		log.Fatalf("Failed to delete '%s' file: %v", configPath, err)
 	}
 }

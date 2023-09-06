@@ -22,6 +22,7 @@ go.work
 
 # Files that may be created when testing the app
 .barber.yaml
+.barber.toml
 
 # Build directory
 build/

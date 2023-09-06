@@ -11,7 +11,7 @@ import (
 var colResetCmd = &cobra.Command{
 	Use:   "reset",
 	Short: "Reset a collection",
-	Long: `Reset a collection by removing the metadata file.
+	Long: `Reset a collection by setting the metadata & config files to their default.
 			This will not affect the git repository.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		resetCollection()
@@ -19,7 +19,7 @@ var colResetCmd = &cobra.Command{
 }
 
 func init() {
-	colResetCmd.PersistentFlags().BoolVarP(&skipConfirm, "yes", "y", false, "confirm removal without prompting")
+	colResetCmd.Flags().BoolVarP(&skipConfirm, "yes", "y", false, "confirm removal without prompting")
 
 	collectionCmd.AddCommand(colResetCmd)
 }

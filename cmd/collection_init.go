@@ -14,9 +14,9 @@ import (
 var colInitCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Initialize a new collection",
-	Long: `Initialize a new collection by creating a git repository and a metadata file.
+	Long: `Initialize a new collection by initializing a git repository, and creating the default metadata and config files.
 			If a git repository already exists, it will not be re-initialized.
-			If a metadata file already exists, it will not be re-created.`,
+			If a file already exists, it will not be re-created.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		initCollection()
 	},

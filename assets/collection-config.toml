@@ -1,0 +1,5 @@
+# Collection Configuration
+
+# Git version control options
+[git]
+auto_commit = true

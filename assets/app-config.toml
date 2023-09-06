@@ -1,0 +1,8 @@
+# App Configuration
+
+default_collection = "./default_collection"
+
+# Git version control options
+[git]
+auto_init = true
+auto_commit = true

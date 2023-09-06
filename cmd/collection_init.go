@@ -23,6 +23,8 @@ var colInitCmd = &cobra.Command{
 }
 
 func init() {
+	colInitCmd.Flags().StringP("collection", "c", ".", "path to collection root directory")
+
 	collectionCmd.AddCommand(colInitCmd)
 }
 
@@ -30,8 +32,7 @@ func init() {
 // If a git repository already exists, it will not be re-initialized.
 // If a file already exists, it will not be re-created.
 func initCollection() {
-	// TODO: Get path from collection flag
-	path := "."
+	path := collection
 
 	// TODO: Provide a config option to disable git repository creation
 	if err := initGitRepo(path); err != nil {

@@ -19,6 +19,7 @@ var colResetCmd = &cobra.Command{
 }
 
 func init() {
+	colResetCmd.Flags().StringP("collection", "c", ".", "path to collection root directory")
 	colResetCmd.Flags().BoolVarP(&skipConfirm, "yes", "y", false, "confirm removal without prompting")
 
 	collectionCmd.AddCommand(colResetCmd)
@@ -28,8 +29,7 @@ func init() {
 // It does not affect the git repository.
 // It uses the skipConfirm flag to determine if the user should be prompted before resetting the files.
 func resetCollection() {
-	// TODO: Get path from collection flag
-	path := "."
+	path := collection
 
 	metadataPath := filepath.Join(path, metadataFilename)
 	if err := internal.DestructiveFileOp(metadataPath, internal.Metadata, skipConfirm, internal.Reset); err != nil {

@@ -7,7 +7,10 @@ import (
 )
 
 // Flags. These are set in the init() function of each command.
-var skipConfirm bool
+var (
+	skipConfirm bool
+	collection  string
+)
 
 const (
 	metadataFilename = ".barber.yaml"

@@ -30,5 +30,20 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
+	// Collection
+	collectionCmd.PersistentFlags().StringVarP(&collection, "collection", "c", ".", "path to collection root directory")
+	rootCmd.AddCommand(collectionCmd)
+
+	// Collection Init
+	collectionCmd.AddCommand(colInitCmd)
+
+	// Collection Reset
+	colResetCmd.Flags().BoolVarP(&skipConfirm, "yes", "y", false, "confirm removal without prompting")
+	collectionCmd.AddCommand(colResetCmd)
+
+	// Collection Remove
+	colRemoveCmd.Flags().BoolVarP(&skipConfirm, "yes", "y", false, "confirm removal without prompting")
+	collectionCmd.AddCommand(colRemoveCmd)
+
 	cobra.CheckErr(rootCmd.Execute())
 }

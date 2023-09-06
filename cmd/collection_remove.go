@@ -20,13 +20,6 @@ var colRemoveCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	colRemoveCmd.Flags().StringVarP(&collection, "collection", "c", ".", "path to collection root directory")
-	colRemoveCmd.Flags().BoolVarP(&skipConfirm, "yes", "y", false, "confirm removal without prompting")
-
-	collectionCmd.AddCommand(colRemoveCmd)
-}
-
 // removeCollection removes a collection by removing the metadata file, and the config file.
 // It does not affect the git repository.
 // It uses the skipConfirm flag to determine if the user should be prompted before removing the metadata files.

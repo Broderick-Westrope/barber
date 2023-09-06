@@ -18,13 +18,6 @@ var colResetCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	colResetCmd.Flags().StringVarP(&collection, "collection", "c", ".", "path to collection root directory")
-	colResetCmd.Flags().BoolVarP(&skipConfirm, "yes", "y", false, "confirm removal without prompting")
-
-	collectionCmd.AddCommand(colResetCmd)
-}
-
 // resetCollection resets a collection by resetting the metadata file, and the config file to their defaults.
 // It does not affect the git repository.
 // It uses the skipConfirm flag to determine if the user should be prompted before resetting the files.

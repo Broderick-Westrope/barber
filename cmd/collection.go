@@ -16,7 +16,3 @@ var collectionCmd = &cobra.Command{
 		}
 	},
 }
-
-func init() {
-	rootCmd.AddCommand(collectionCmd)
-}

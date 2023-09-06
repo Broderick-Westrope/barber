@@ -22,12 +22,6 @@ var colInitCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	colInitCmd.Flags().StringVarP(&collection, "collection", "c", ".", "path to collection root directory")
-
-	collectionCmd.AddCommand(colInitCmd)
-}
-
 // Initializes a new collection by creating a git repository, a metadata file, and a config file.
 // If a git repository already exists, it will not be re-initialized.
 // If a file already exists, it will not be re-created.

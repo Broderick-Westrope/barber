@@ -175,6 +175,11 @@ func createFile(path string, fileType FileType, context fileContext) error {
 	}
 	defer srcFile.Close()
 
+	err = os.MkdirAll(filepath.Dir(path), os.ModePerm)
+	if err != nil {
+		return fmt.Errorf("Failed to create directory for '%s' %s file: %w", path, fileType, err)
+	}
+
 	dstFile, err = os.Create(path)
 	if err != nil {
 		return fmt.Errorf("Failed to create '%s' %s file: %w", path, fileType, err)

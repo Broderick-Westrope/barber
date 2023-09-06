@@ -96,6 +96,11 @@ func InitFile(path string, fileType FileType) error {
 	_, err := os.Stat(path)
 	switch {
 	case errors.Is(err, fs.ErrNotExist):
+		pathDirs := filepath.Dir(path)
+		if _, err := os.Stat(pathDirs); errors.Is(err, fs.ErrNotExist) {
+			return fmt.Errorf("Required directory '%s' does not exist: %w", pathDirs, err)
+		}
+
 		fmt.Printf("Creating '%s' %s file...\n", filename, fileType)
 		if err = createFile(path, fileType, Collection); err != nil {
 			return fmt.Errorf("Failed to create '%s' %s file: %w", path, fileType, err)

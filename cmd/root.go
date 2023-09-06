@@ -10,8 +10,8 @@ import (
 var skipConfirm bool
 
 const (
-	defMetadataFile = ".barber.yaml"
-	defConfigFile   = ".barber.toml"
+	metadataFilename = ".barber.yaml"
+	configFilename   = ".barber.toml"
 )
 
 var rootCmd = &cobra.Command{

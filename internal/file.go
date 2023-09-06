@@ -3,6 +3,7 @@ package internal
 import (
 	"errors"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -24,6 +25,13 @@ type FileOperation string
 const (
 	Delete FileOperation = "delete"
 	Reset  FileOperation = "reset"
+)
+
+type fileContext string
+
+const (
+	Collection fileContext = "collection"
+	App        fileContext = "app"
 )
 
 // DestructiveFileOp performs a destructive operation on a file based on the value of fileOp.
@@ -89,7 +97,7 @@ func InitFile(path string, fileType FileType) error {
 	switch {
 	case errors.Is(err, fs.ErrNotExist):
 		fmt.Printf("Creating '%s' %s file...\n", filename, fileType)
-		if err = createFile(path, fileType); err != nil {
+		if err = createFile(path, fileType, Collection); err != nil {
 			return fmt.Errorf("Failed to create '%s' %s file: %w", path, fileType, err)
 		}
 		fmt.Printf("Created '%s' %s file\n", filename, fileType)
@@ -117,7 +125,7 @@ func resetFile(path string, fileType FileType) error {
 		fmt.Printf("'%s' %s file does not exist\n", filename, fileType)
 	case err == nil:
 		fmt.Printf("Found '%s' %s file. Resetting it...\n", filename, fileType)
-		if err = createFile(path, fileType); err != nil {
+		if err = createFile(path, fileType, Collection); err != nil {
 			return fmt.Errorf("Failed to reset '%s' %s file: %w", path, fileType, err)
 		}
 		fmt.Printf("Reset '%s' %s file\n", filename, fileType)
@@ -146,16 +154,36 @@ func deleteFile(path string, fileType FileType) error {
 }
 
 // createFile creates a file with the default contents based on the fileType parameter.
-func createFile(path string, fileType FileType) error {
-	file, err := os.Create(path)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
+// The
+func createFile(path string, fileType FileType, context fileContext) error {
+	var srcFile, dstFile *os.File
+	var err error
 
-	_, err = file.WriteString(`# Collection metadata`)
+	assetsPath := "assets"
+
+	switch fileType {
+	case Metadata:
+		srcFile, err = os.Open(filepath.Join(assetsPath, string(context)+"-metadata.yaml"))
+	case Config:
+		srcFile, err = os.Open(filepath.Join(assetsPath, string(context)+"-config.toml"))
+	default:
+		return fmt.Errorf("Invalid file type '%s'", fileType)
+	}
+
 	if err != nil {
-		return err
+		return fmt.Errorf("Failed to open %s %s file '%s': %w", context, fileType, path, err)
+	}
+	defer srcFile.Close()
+
+	dstFile, err = os.Create(path)
+	if err != nil {
+		return fmt.Errorf("Failed to create '%s' %s file: %w", path, fileType, err)
+	}
+	defer dstFile.Close()
+
+	_, err = io.Copy(dstFile, srcFile)
+	if err != nil {
+		return fmt.Errorf("Failed to copy contents of '%s' %s file to '%s': %w", srcFile.Name(), fileType, dstFile.Name(), err)
 	}
 	return nil
 }

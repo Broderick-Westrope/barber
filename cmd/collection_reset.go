@@ -1,17 +1,14 @@
 package cmd
 
 import (
-	"errors"
-	"fmt"
-	"io/fs"
 	"log"
-	"os"
+	"path/filepath"
 
 	"github.com/Broderick-Westrope/barber/internal"
 	"github.com/spf13/cobra"
 )
 
-var collResetCmd = &cobra.Command{
+var colResetCmd = &cobra.Command{
 	Use:   "reset",
 	Short: "Reset a collection",
 	Long: `Reset a collection by removing the metadata file.
@@ -22,19 +19,25 @@ var collResetCmd = &cobra.Command{
 }
 
 func init() {
-	collectionCmd.AddCommand(collResetCmd)
+	colResetCmd.PersistentFlags().BoolVarP(&skipConfirm, "yes", "y", false, "confirm removal without prompting")
+
+	collectionCmd.AddCommand(colResetCmd)
 }
 
+// resetCollection resets a collection by resetting the metadata file, and the config file to their defaults.
+// It does not affect the git repository.
+// It uses the skipConfirm flag to determine if the user should be prompted before resetting the files.
 func resetCollection() {
-	if _, err := os.Stat(defMetadataFile); errors.Is(err, fs.ErrNotExist) {
-		fmt.Printf("'%s' file does not exist\n", defMetadataFile)
-	} else if err != nil {
-		log.Fatalf("Failed to check if '%s' file exists: %v", defMetadataFile, err)
-	} else {
-		fmt.Printf("Found '%s' file. Resetting it...\n", defMetadataFile)
-		if err = internal.CreateMetadataFile(defMetadataFile); err != nil {
-			log.Fatalf("Failed to reset '%s' file: %v", defMetadataFile, err)
-		}
-		fmt.Printf("Reset '%s' file\n", defMetadataFile)
+	// TODO: Get path from collection flag
+	path := "."
+
+	metadataPath := filepath.Join(path, metadataFilename)
+	if err := internal.DestructiveFileOp(metadataPath, internal.Metadata, skipConfirm, internal.Reset); err != nil {
+		log.Fatalf("Failed to reset '%s' file: %v", metadataPath, err)
+	}
+
+	configPath := filepath.Join(path, configFilename)
+	if err := internal.DestructiveFileOp(configPath, internal.Config, skipConfirm, internal.Reset); err != nil {
+		log.Fatalf("Failed to reset '%s' file: %v", configPath, err)
 	}
 }

@@ -3,3 +3,4 @@
 # Git version control options
 [git]
 auto_commit = true
+auto_init = true

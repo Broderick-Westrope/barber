@@ -27,12 +27,12 @@ func removeCollection() {
 	path := collection
 
 	metadataPath := filepath.Join(path, metadataFilename)
-	if err := internal.DestructiveFileOp(metadataPath, internal.Metadata, skipConfirm, internal.Delete); err != nil {
+	if err := internal.DestructiveFileOp(metadataPath, internal.MetadataFile, skipConfirm, internal.DeleteOp); err != nil {
 		log.Fatalf("Failed to delete '%s' file: %v", metadataPath, err)
 	}
 
 	configPath := filepath.Join(path, configFilename)
-	if err := internal.DestructiveFileOp(configPath, internal.Config, skipConfirm, internal.Delete); err != nil {
+	if err := internal.DestructiveFileOp(configPath, internal.ConfigFile, skipConfirm, internal.DeleteOp); err != nil {
 		log.Fatalf("Failed to delete '%s' file: %v", configPath, err)
 	}
 }

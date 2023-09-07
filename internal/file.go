@@ -14,8 +14,8 @@ import (
 type FileType string
 
 const (
-	Metadata FileType = "metadata"
-	Config   FileType = "config"
+	MetadataFile FileType = "metadata"
+	ConfigFile   FileType = "config"
 )
 
 // FileOperation represents a file operation.
@@ -23,15 +23,15 @@ const (
 type FileOperation string
 
 const (
-	Delete FileOperation = "delete"
-	Reset  FileOperation = "reset"
+	DeleteOp FileOperation = "delete"
+	ResetOp  FileOperation = "reset"
 )
 
 type fileContext string
 
 const (
-	Collection fileContext = "collection"
-	App        fileContext = "app"
+	CollectionCtx fileContext = "collection"
+	AppCtx        fileContext = "app"
 )
 
 // DestructiveFileOp performs a destructive operation on a file based on the value of fileOp.
@@ -53,9 +53,9 @@ func DestructiveFileOp(path string, fileType FileType, skipConfirm bool, fileOp 
 
 	var operationFunc func(string, FileType) error
 	switch fileOp {
-	case Reset:
+	case ResetOp:
 		operationFunc = resetFile
-	case Delete:
+	case DeleteOp:
 		operationFunc = deleteFile
 	}
 
@@ -102,7 +102,7 @@ func InitFile(path string, fileType FileType) error {
 		}
 
 		fmt.Printf("Creating '%s' %s file...\n", filename, fileType)
-		if err = createFile(path, fileType, Collection); err != nil {
+		if err = createFile(path, fileType, CollectionCtx); err != nil {
 			return fmt.Errorf("Failed to create '%s' %s file: %w", path, fileType, err)
 		}
 		fmt.Printf("Created '%s' %s file\n", filename, fileType)
@@ -130,7 +130,7 @@ func resetFile(path string, fileType FileType) error {
 		fmt.Printf("'%s' %s file does not exist\n", filename, fileType)
 	case err == nil:
 		fmt.Printf("Found '%s' %s file. Resetting it...\n", filename, fileType)
-		if err = createFile(path, fileType, Collection); err != nil {
+		if err = createFile(path, fileType, CollectionCtx); err != nil {
 			return fmt.Errorf("Failed to reset '%s' %s file: %w", path, fileType, err)
 		}
 		fmt.Printf("Reset '%s' %s file\n", filename, fileType)
@@ -167,9 +167,9 @@ func createFile(path string, fileType FileType, context fileContext) error {
 	assetsPath := "assets"
 
 	switch fileType {
-	case Metadata:
+	case MetadataFile:
 		srcFile, err = os.Open(filepath.Join(assetsPath, string(context)+"-metadata.yaml"))
-	case Config:
+	case ConfigFile:
 		srcFile, err = os.Open(filepath.Join(assetsPath, string(context)+"-config.toml"))
 	default:
 		return fmt.Errorf("Invalid file type '%s'", fileType)
@@ -201,7 +201,7 @@ func createFile(path string, fileType FileType, context fileContext) error {
 // validateFileType checks if the fileType parameter is one of the constants defined in this package.
 var validateFileType = func(fileType FileType) error {
 	switch fileType {
-	case Metadata, Config:
+	case MetadataFile, ConfigFile:
 		return nil
 	default:
 		return fmt.Errorf("Invalid file type '%s'", fileType)
@@ -211,7 +211,7 @@ var validateFileType = func(fileType FileType) error {
 // validateFileOperation checks if the fileOp parameter is one of the constants defined in this package.
 var validateFileOperation = func(fileOp FileOperation) error {
 	switch fileOp {
-	case Reset, Delete:
+	case ResetOp, DeleteOp:
 		return nil
 	default:
 		return fmt.Errorf("Invalid file operation '%s'", fileOp)

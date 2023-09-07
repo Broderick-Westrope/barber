@@ -25,12 +25,12 @@ func resetCollection() {
 	path := collection
 
 	metadataPath := filepath.Join(path, metadataFilename)
-	if err := internal.DestructiveFileOp(metadataPath, internal.Metadata, skipConfirm, internal.Reset); err != nil {
+	if err := internal.DestructiveFileOp(metadataPath, internal.MetadataFile, skipConfirm, internal.ResetOp); err != nil {
 		log.Fatalf("Failed to reset '%s' file: %v", metadataPath, err)
 	}
 
 	configPath := filepath.Join(path, configFilename)
-	if err := internal.DestructiveFileOp(configPath, internal.Config, skipConfirm, internal.Reset); err != nil {
+	if err := internal.DestructiveFileOp(configPath, internal.ConfigFile, skipConfirm, internal.ResetOp); err != nil {
 		log.Fatalf("Failed to reset '%s' file: %v", configPath, err)
 	}
 }

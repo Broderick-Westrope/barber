@@ -34,12 +34,12 @@ func initCollection() {
 	}
 
 	metadataPath := filepath.Join(path, metadataFilename)
-	if err := internal.InitFile(metadataPath, internal.Metadata); err != nil {
+	if err := internal.InitFile(metadataPath, internal.MetadataFile); err != nil {
 		log.Println(err)
 	}
 
 	configPath := filepath.Join(path, configFilename)
-	if err := internal.InitFile(configPath, internal.Config); err != nil {
+	if err := internal.InitFile(configPath, internal.ConfigFile); err != nil {
 		log.Println(err)
 	}
 }

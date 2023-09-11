@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 )
@@ -46,4 +47,10 @@ func Execute() {
 	collectionCmd.AddCommand(colRemoveCmd)
 
 	cobra.CheckErr(rootCmd.Execute())
+}
+
+func displayHelp(cmd *cobra.Command, args []string) {
+	if err := cmd.Help(); err != nil {
+		log.Fatalf("Failed to display help: %v", err)
+	}
 }

@@ -46,6 +46,13 @@ func Execute() {
 	colRemoveCmd.Flags().BoolVarP(&skipConfirm, "yes", "y", false, "confirm removal without prompting")
 	collectionCmd.AddCommand(colRemoveCmd)
 
+	// Snippet
+	snippetCmd.PersistentFlags().StringVarP(&collection, "collection", "c", ".", "path to collection root directory")
+	rootCmd.AddCommand(snippetCmd)
+
+	// Snippet Add
+	snippetCmd.AddCommand(snptAddCmd)
+
 	cobra.CheckErr(rootCmd.Execute())
 }
 

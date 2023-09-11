@@ -7,6 +7,7 @@ require (
 	github.com/go-git/go-billy/v5 v5.4.1
 	github.com/go-git/go-git/v5 v5.8.1
 	github.com/spf13/cobra v1.7.0
+	gopkg.in/yaml.v2 v2.2.4
 )
 
 require (

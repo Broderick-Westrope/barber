@@ -8,7 +8,8 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-const appPath = "app"
+const (appPath = "app"
+ConfigFilename = ".barber.toml")
 
 // gitConfig is the configuration for a git repository.
 type gitConfig struct {

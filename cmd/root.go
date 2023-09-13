@@ -53,6 +53,9 @@ func Execute() {
 	// Snippet Add
 	snippetCmd.AddCommand(snptAddCmd)
 
+	// Snippet Remove
+	snippetCmd.AddCommand(snptRemoveCmd)
+
 	cobra.CheckErr(rootCmd.Execute())
 }
 

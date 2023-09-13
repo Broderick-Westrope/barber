@@ -9,12 +9,14 @@ import (
 )
 
 var snptAddCmd = &cobra.Command{
-	Use:  "add",
+	Use:  "add path",
 	Aliases: []string{"a"},
 	Short: "Add a snippet",
-	Long: `Add a snippet to the collection`,
-	Args: cobra.MinimumNArgs(1),
-	ValidArgs: []string{"collection", "snippet"},
+	Long: `Add a snippet to the collection.
+
+Positional Arguments:
+  path:	The path to the snippet file you want to add to the collection. This is relative to the collection root directory.`,
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		addSnippet(collectionPath, args[0])
 	},

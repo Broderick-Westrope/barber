@@ -16,7 +16,7 @@ var snptAddCmd = &cobra.Command{
 	Args: cobra.MinimumNArgs(1),
 	ValidArgs: []string{"collection", "snippet"},
 	Run: func(cmd *cobra.Command, args []string) {
-		addSnippet(collection, args[0])
+		addSnippet(collectionPath, args[0])
 	},
 }
 

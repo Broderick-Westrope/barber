@@ -10,7 +10,7 @@ import (
 // Flags. These are set in the init() function of each command.
 var (
 	skipConfirm bool
-	collection  string
+	collectionPath  string
 )
 
 const (
@@ -32,7 +32,7 @@ var rootCmd = &cobra.Command{
 
 func Execute() {
 	// Collection
-	collectionCmd.PersistentFlags().StringVarP(&collection, "collection", "c", ".", "path to collection root directory")
+	collectionCmd.PersistentFlags().StringVarP(&collectionPath, "collection", "c", ".", "path to collection root directory")
 	rootCmd.AddCommand(collectionCmd)
 
 	// Collection Init
@@ -47,7 +47,7 @@ func Execute() {
 	collectionCmd.AddCommand(colRemoveCmd)
 
 	// Snippet
-	snippetCmd.PersistentFlags().StringVarP(&collection, "collection", "c", ".", "path to collection root directory")
+	snippetCmd.PersistentFlags().StringVarP(&collectionPath, "collection", "c", ".", "path to collection root directory")
 	rootCmd.AddCommand(snippetCmd)
 
 	// Snippet Add

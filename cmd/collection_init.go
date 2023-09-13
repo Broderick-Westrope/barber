@@ -14,31 +14,29 @@ import (
 var colInitCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Initialize a new collection",
-	Long: `Initialize a new collection by initializing a git repository, and creating the default metadata and config files.
+	Long: `Initialize a new collection by initialising a git repository, and creating the default metadata and config files.
 			If a git repository already exists, it will not be re-initialized.
 			If a file already exists, it will not be re-created.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		initCollection()
+		initCollection(collectionPath)
 	},
 }
 
-// Initializes a new collection by creating a git repository, a metadata file, and a config file.
+// Initialises a new collection by creating a git repository, a metadata file, and a config file.
 // If a git repository already exists, it will not be re-initialized.
 // If a file already exists, it will not be re-created.
-func initCollection() {
-	path := collection
-
+func initCollection(colPath string) {
 	// TODO: Provide a config option to disable git repository creation
-	if err := initGitRepo(path); err != nil {
+	if err := initGitRepo(colPath); err != nil {
 		log.Println(err)
 	}
 
-	metadataPath := filepath.Join(path, metadataFilename)
+	metadataPath := filepath.Join(colPath, metadataFilename)
 	if err := internal.InitFile(metadataPath, internal.MetadataFile); err != nil {
 		log.Println(err)
 	}
 
-	configPath := filepath.Join(path, configFilename)
+	configPath := filepath.Join(colPath, configFilename)
 	if err := internal.InitFile(configPath, internal.ConfigFile); err != nil {
 		log.Println(err)
 	}
@@ -49,7 +47,7 @@ func initGitRepo(path string) error {
 	_, err := git.PlainOpen(path)
 	switch {
 	case errors.Is(err, git.ErrRepositoryNotExists):
-		fmt.Println("Initializing a new git repository...")
+		fmt.Println("Initialising a new git repository...")
 		_, err = git.PlainInit(".", false)
 		if err != nil {
 			return fmt.Errorf("Failed to initialize git repository: %w", err)

@@ -14,22 +14,20 @@ var colResetCmd = &cobra.Command{
 	Long: `Reset a collection by setting the metadata & config files to their default.
 			This will not affect the git repository.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		resetCollection()
+		resetCollection(collectionPath)
 	},
 }
 
 // resetCollection resets a collection by resetting the metadata file, and the config file to their defaults.
 // It does not affect the git repository.
 // It uses the skipConfirm flag to determine if the user should be prompted before resetting the files.
-func resetCollection() {
-	path := collection
-
-	metadataPath := filepath.Join(path, metadataFilename)
+func resetCollection(colPath string) {
+	metadataPath := filepath.Join(colPath, metadataFilename)
 	if err := internal.DestructiveFileOp(metadataPath, internal.MetadataFile, skipConfirm, internal.ResetOp); err != nil {
 		log.Fatalf("Failed to reset '%s' file: %v", metadataPath, err)
 	}
 
-	configPath := filepath.Join(path, configFilename)
+	configPath := filepath.Join(colPath, configFilename)
 	if err := internal.DestructiveFileOp(configPath, internal.ConfigFile, skipConfirm, internal.ResetOp); err != nil {
 		log.Fatalf("Failed to reset '%s' file: %v", configPath, err)
 	}

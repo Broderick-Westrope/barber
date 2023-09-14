@@ -11,7 +11,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// TODO: add an option to do a dry-run where you can see the changes that will be made to the collection metadata, without actually making them
 var scanCmd = &cobra.Command{
 	Use:  "scan",
 	Aliases: []string{"a"},

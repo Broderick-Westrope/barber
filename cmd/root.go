@@ -11,6 +11,8 @@ import (
 var (
 	yesFlag bool
 	collectionFlag  string
+	keepFlag bool
+	dryRunFlag bool
 )
 
 const (
@@ -55,6 +57,12 @@ func Execute() {
 
 	// Snippet Remove
 	snippetCmd.AddCommand(snptRemoveCmd)
+
+	// Scan
+	scanCmd.Flags().StringVarP(&collectionFlag, "collection", "c", ".", "path to collection root directory")
+	scanCmd.Flags().BoolVar(&keepFlag, "keep", false, "keep snippets that are not found in the filesystem")
+	scanCmd.Flags().BoolVar(&dryRunFlag, "dry-run", false, "display proposed changes without performing them")
+	rootCmd.AddCommand(scanCmd)
 
 	cobra.CheckErr(rootCmd.Execute())
 }

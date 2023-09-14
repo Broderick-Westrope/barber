@@ -199,7 +199,7 @@ func createFile(path string, fileType FileType, context fileContext) error {
 }
 
 // validateFileType checks if the fileType parameter is one of the constants defined in this package.
-var validateFileType = func(fileType FileType) error {
+func validateFileType(fileType FileType) error {
 	switch fileType {
 	case MetadataFile, ConfigFile:
 		return nil
@@ -209,7 +209,7 @@ var validateFileType = func(fileType FileType) error {
 }
 
 // validateFileOperation checks if the fileOp parameter is one of the constants defined in this package.
-var validateFileOperation = func(fileOp FileOperation) error {
+func validateFileOperation(fileOp FileOperation) error {
 	switch fileOp {
 	case ResetOp, DeleteOp:
 		return nil

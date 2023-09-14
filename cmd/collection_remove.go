@@ -16,7 +16,7 @@ var colRemoveCmd = &cobra.Command{
 			This will not remove the git repository.
 			If a file does not exist, nothing will happen.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		removeCollection(collectionPath)
+		removeCollection(collectionFlag)
 	},
 }
 
@@ -25,12 +25,12 @@ var colRemoveCmd = &cobra.Command{
 // It uses the skipConfirm flag to determine if the user should be prompted before removing the metadata files.
 func removeCollection(colPath string) {
 	metadataPath := filepath.Join(colPath, metadataFilename)
-	if err := internal.DestructiveFileOp(metadataPath, internal.MetadataFile, skipConfirm, internal.DeleteOp); err != nil {
+	if err := internal.DestructiveFileOp(metadataPath, internal.MetadataFile, yesFlag, internal.DeleteOp); err != nil {
 		log.Fatalf("Failed to delete '%s' file: %v", metadataPath, err)
 	}
 
 	configPath := filepath.Join(colPath, configFilename)
-	if err := internal.DestructiveFileOp(configPath, internal.ConfigFile, skipConfirm, internal.DeleteOp); err != nil {
+	if err := internal.DestructiveFileOp(configPath, internal.ConfigFile, yesFlag, internal.DeleteOp); err != nil {
 		log.Fatalf("Failed to delete '%s' file: %v", configPath, err)
 	}
 }

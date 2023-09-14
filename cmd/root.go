@@ -9,8 +9,8 @@ import (
 
 // Flags. These are set in the init() function of each command.
 var (
-	skipConfirm bool
-	collectionPath  string
+	yesFlag bool
+	collectionFlag  string
 )
 
 const (
@@ -32,22 +32,22 @@ Documentation is available at https://github.com/Broderick-Westrope/barber`,
 
 func Execute() {
 	// Collection
-	collectionCmd.PersistentFlags().StringVarP(&collectionPath, "collection", "c", ".", "path to collection root directory")
+	collectionCmd.PersistentFlags().StringVarP(&collectionFlag, "collection", "c", ".", "path to collection root directory")
 	rootCmd.AddCommand(collectionCmd)
 
 	// Collection Init
 	collectionCmd.AddCommand(colInitCmd)
 
 	// Collection Reset
-	colResetCmd.Flags().BoolVarP(&skipConfirm, "yes", "y", false, "confirm removal without prompting")
+	colResetCmd.Flags().BoolVarP(&yesFlag, "yes", "y", false, "confirm removal without prompting")
 	collectionCmd.AddCommand(colResetCmd)
 
 	// Collection Remove
-	colRemoveCmd.Flags().BoolVarP(&skipConfirm, "yes", "y", false, "confirm removal without prompting")
+	colRemoveCmd.Flags().BoolVarP(&yesFlag, "yes", "y", false, "confirm removal without prompting")
 	collectionCmd.AddCommand(colRemoveCmd)
 
 	// Snippet
-	snippetCmd.PersistentFlags().StringVarP(&collectionPath, "collection", "c", ".", "path to collection root directory")
+	snippetCmd.PersistentFlags().StringVarP(&collectionFlag, "collection", "c", ".", "path to collection root directory")
 	rootCmd.AddCommand(snippetCmd)
 
 	// Snippet Add

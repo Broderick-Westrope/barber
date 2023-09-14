@@ -19,7 +19,7 @@ var snptRemoveCmd = &cobra.Command{
 	Args: cobra.MinimumNArgs(1),
 	ValidArgs: []string{"snippet"},
 	Run: func(cmd *cobra.Command, args []string) {
-		removeSnippet(collectionPath, args[0])
+		removeSnippet(collectionFlag, args[0])
 	},
 }
 

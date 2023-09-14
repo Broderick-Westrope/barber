@@ -7,9 +7,10 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
-// FileType represents a file type in relation to the application logic.
+// Represents a file type in relation to the application logic.
 // This is not the file extension, but rather the purpose of the file.
 type FileType string
 
@@ -18,7 +19,7 @@ const (
 	ConfigFile   FileType = "config"
 )
 
-// FileOperation represents a file operation.
+// Represents a file operation.
 // It is a verb that describes what is being done to the file.
 type FileOperation string
 
@@ -34,7 +35,7 @@ const (
 	AppCtx        fileContext = "app"
 )
 
-// DestructiveFileOp performs a destructive operation on a file based on the value of fileOp.
+// Performs a destructive operation on a file based on the value of fileOp.
 // If skipConfirm is not true, the user will be prompted before performing the destructive operation.
 func DestructiveFileOp(path string, fileType FileType, skipConfirm bool, fileOp FileOperation) error {
 	if err := validateFileType(fileType); err != nil {
@@ -83,10 +84,10 @@ func DestructiveFileOp(path string, fileType FileType, skipConfirm bool, fileOp 
 	return nil
 }
 
-// InitFile creates a file if it does not exist.
+// Creates a file if it does not exist.
 //
 // The fileType parameter is used for logging purposes and to determine the default contents of the file. It should be one of the constants defined in this package.
-func InitFile(path string, fileType FileType) error {
+func initFile(path string, fileType FileType) error {
 	if err := validateFileType(fileType); err != nil {
 		return fmt.Errorf("Failed to initialize file '%s' of type '%s': %w", path, fileType, err)
 	}
@@ -114,7 +115,7 @@ func InitFile(path string, fileType FileType) error {
 	return nil
 }
 
-// resetFile resets a file to its default if it exists.
+// Resets a file to its default if it exists.
 //
 // The fileType parameter is used for logging purposes and to determine the default contents of the file. It should be one of the constants defined in this package.
 func resetFile(path string, fileType FileType) error {
@@ -140,7 +141,7 @@ func resetFile(path string, fileType FileType) error {
 	return nil
 }
 
-// deleteFile deletes a file if it exists.
+// Deletes a file if it exists.
 //
 // The fileType parameter is used for logging purposes. It should be one of the constants defined in this package.
 func deleteFile(path string, fileType FileType) error {
@@ -158,7 +159,7 @@ func deleteFile(path string, fileType FileType) error {
 	return nil
 }
 
-// createFile creates a file with the default contents based on the fileType parameter.
+// Creates a file with the default contents based on the fileType parameter.
 // The
 func createFile(path string, fileType FileType, context fileContext) error {
 	var srcFile, dstFile *os.File
@@ -198,7 +199,7 @@ func createFile(path string, fileType FileType, context fileContext) error {
 	return nil
 }
 
-// validateFileType checks if the fileType parameter is one of the constants defined in this package.
+// Checks if the fileType parameter is one of the constants defined in this package.
 func validateFileType(fileType FileType) error {
 	switch fileType {
 	case MetadataFile, ConfigFile:
@@ -208,7 +209,7 @@ func validateFileType(fileType FileType) error {
 	}
 }
 
-// validateFileOperation checks if the fileOp parameter is one of the constants defined in this package.
+// Checks if the fileOp parameter is one of the constants defined in this package.
 func validateFileOperation(fileOp FileOperation) error {
 	switch fileOp {
 	case ResetOp, DeleteOp:
@@ -216,4 +217,15 @@ func validateFileOperation(fileOp FileOperation) error {
 	default:
 		return fmt.Errorf("Invalid file operation '%s'", fileOp)
 	}
+}
+
+// Checks if a path should be ignored.
+func shouldIgnore(path string) bool {
+	// TODO: add the ability to have a gitignore-like file that will ignore certain paths or directories
+	filename := filepath.Base(path)
+
+	if strings.HasPrefix(filename, ".") || path == metadataFilename || path == configFilename {
+		return true
+	}
+	return false
 }

@@ -1,13 +1,13 @@
 package cmd
 
 import (
-	"log"
-	"path/filepath"
+	"fmt"
 
 	"github.com/Broderick-Westrope/barber/internal"
 	"github.com/spf13/cobra"
 )
 
+// Removes a snippet from the collection.
 var snptRemoveCmd = &cobra.Command{
 	Use:  "remove path",
 	Aliases: []string{"rm"},
@@ -19,48 +19,9 @@ var snptRemoveCmd = &cobra.Command{
 	Args: cobra.MinimumNArgs(1),
 	ValidArgs: []string{"snippet"},
 	Run: func(cmd *cobra.Command, args []string) {
-		removeSnippet(collectionFlag, args[0])
-	},
-}
-
-func removeSnippet(colPath string, snptPath string){
-	exists, err := internal.IsCollection(colPath)
-	if err != nil {
-		log.Fatalf("Failed to check if '%s' is a collection: %v", colPath, err)
-	} else if !exists {
-		log.Fatalf("'%s' is not a collection", colPath)
-	}
-
-	metadataPath := filepath.Join(colPath, internal.MetadataFilename)
-	metadata, err := internal.GetMetadata(metadataPath)
-	if err != nil {
-		log.Fatalf("Failed to get metadata at '%s': %v", metadataPath, err)
-	}
-
-	count := 0
-	j := 0
-	for i, snpt := range metadata.Snippets {
-		if snpt.Path == snptPath {
-			count++
-			continue
+		err := internal.RemoveSnippet(collectionFlag, args[0])
+		if err != nil {
+			fmt.Printf("Error: %s\n", err)
 		}
-		metadata.Snippets[j] = metadata.Snippets[i]
-		j++
-	}
-	metadata.Snippets = metadata.Snippets[:j]
-
-	if count == 0 {
-		log.Fatalf("No snippets with path '%s' found in collection '%s'", snptPath, colPath)
-	}
-
-	err = internal.WriteMetadata(metadataPath, metadata)
-	if err != nil {
-		log.Fatalf("Failed to write metadata at '%s': %v", metadataPath, err)
-	}
-
-	plural := ""
-	if count > 1 {
-		plural = "s"
-	}
-	log.Printf("Removed %d snippet%s '%s' from collection '%s'", count, plural, snptPath, colPath)
+	},
 }

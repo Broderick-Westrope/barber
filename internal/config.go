@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"log"
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -28,7 +28,7 @@ type Config struct {
 	Collection collectionConfig `toml:"collection"`
 }
 
-func GetConfig(collectionPath string) *Config {
+func GetConfig(collectionPath string) (*Config, error) {
 	// Set default values
 	cfg := &Config{
 		Collection: collectionConfig{
@@ -43,24 +43,24 @@ func GetConfig(collectionPath string) *Config {
 	// TODO: Replace with a constant for the config file name
 	file, err := os.Open(filepath.Join(appPath, ".barber.toml"))
 	if err != nil {
-		log.Fatalf("Error opening config file: %s", err)
+		return nil, fmt.Errorf("Error opening config file: %s", err)
 	}
 	defer file.Close()
 
 	if _, err := toml.NewDecoder(file).Decode(cfg); err != nil {
-		log.Fatalf("Error decoding config file: %s", err)
+		return nil, fmt.Errorf("Error decoding config file: %s", err)
 	}
 
 	// TODO: Read collection config file
 	file, err = os.Open(collectionPath)
 	if err != nil {
-		log.Fatalf("Error opening config file: %s", err)
+		return nil, fmt.Errorf("Error opening config file: %s", err)
 	}
 	defer file.Close()
 
 	if _, err := toml.NewDecoder(file).Decode(cfg); err != nil {
-		log.Fatalf("Error decoding config file: %s", err)
+		return nil, fmt.Errorf("Error decoding config file: %s", err)
 	}
 
-	return cfg
+	return cfg, nil
 }

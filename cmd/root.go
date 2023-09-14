@@ -7,19 +7,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// Flags. These are set in the init() function of each command.
 var (
-	yesFlag bool
-	collectionFlag  string
-	keepFlag bool
-	dryRunFlag bool
+	yesFlag bool // skip confirmation prompts
+	collectionFlag  string // path to collection root directory
+	keepFlag bool // keep snippets that are not found in the filesystem
+	dryRunFlag bool // display proposed changes without performing them
 )
 
-const (
-	metadataFilename = ".barber.yaml"
-	configFilename   = ".barber.toml"
-)
-
+// The base command.
+// When called without any subcommands, it will launch interactive mode.
 var rootCmd = &cobra.Command{
 	Use:   "barber",
 	Short: "Barber is a tool for managing snippets",
@@ -32,6 +28,8 @@ Documentation is available at https://github.com/Broderick-Westrope/barber`,
 	},
 }
 
+// Execute runs the root command.
+// This is the entry point for the CLI.
 func Execute() {
 	// Collection
 	collectionCmd.PersistentFlags().StringVarP(&collectionFlag, "collection", "c", ".", "path to collection root directory")
@@ -67,6 +65,7 @@ func Execute() {
 	cobra.CheckErr(rootCmd.Execute())
 }
 
+// Displays the help message for a command.
 func displayHelp(cmd *cobra.Command, args []string) {
 	if err := cmd.Help(); err != nil {
 		log.Fatalf("Failed to display help: %v", err)

@@ -1,13 +1,13 @@
 package cmd
 
 import (
-	"log"
-	"path/filepath"
+	"fmt"
 
 	"github.com/Broderick-Westrope/barber/internal"
 	"github.com/spf13/cobra"
 )
 
+// Removes a collection by removing the metadata & config files.
 var colRemoveCmd = &cobra.Command{
 	Use:     "remove",
 	Aliases: []string{"rm"},
@@ -16,21 +16,9 @@ var colRemoveCmd = &cobra.Command{
 			This will not remove the git repository.
 			If a file does not exist, nothing will happen.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		removeCollection(collectionFlag)
+		err := internal.RemoveCollection(collectionFlag, yesFlag)
+		if err != nil {
+			fmt.Printf("Error: %s\n", err)
+		}
 	},
-}
-
-// removeCollection removes a collection by removing the metadata file, and the config file.
-// It does not affect the git repository.
-// It uses the skipConfirm flag to determine if the user should be prompted before removing the metadata files.
-func removeCollection(colPath string) {
-	metadataPath := filepath.Join(colPath, metadataFilename)
-	if err := internal.DestructiveFileOp(metadataPath, internal.MetadataFile, yesFlag, internal.DeleteOp); err != nil {
-		log.Fatalf("Failed to delete '%s' file: %v", metadataPath, err)
-	}
-
-	configPath := filepath.Join(colPath, configFilename)
-	if err := internal.DestructiveFileOp(configPath, internal.ConfigFile, yesFlag, internal.DeleteOp); err != nil {
-		log.Fatalf("Failed to delete '%s' file: %v", configPath, err)
-	}
 }

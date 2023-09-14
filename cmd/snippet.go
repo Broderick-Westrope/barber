@@ -4,6 +4,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Contains subcommands for managing snippets within a collection.
 var snippetCmd = &cobra.Command{
 	Use: "snippet",
 	Aliases: []string{"snpt"},

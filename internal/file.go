@@ -169,15 +169,17 @@ func createFile(path string, fileType FileType, context fileContext) error {
 
 	switch fileType {
 	case MetadataFile:
-		srcFile, err = os.Open(filepath.Join(assetsPath, string(context)+"-metadata.yaml"))
+		assetPath = filepath.Join(assetPath, string(context)+"-metadata.yaml")
+		srcFile, err = os.Open(assetPath)
 	case ConfigFile:
-		srcFile, err = os.Open(filepath.Join(assetsPath, string(context)+"-config.toml"))
+		assetPath = filepath.Join(assetPath, string(context)+"-config.toml")
+		srcFile, err = os.Open(assetPath)
 	default:
 		return fmt.Errorf("Invalid file type '%s'", fileType)
 	}
 
 	if err != nil {
-		return fmt.Errorf("Failed to open %s %s file '%s': %w", context, fileType, path, err)
+		return fmt.Errorf("Failed to open %s %s file '%s': %w", context, fileType, assetPath, err)
 	}
 	defer srcFile.Close()
 

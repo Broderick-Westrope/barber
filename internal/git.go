@@ -13,7 +13,7 @@ func initGitRepo(path string) error {
 	switch {
 	case errors.Is(err, git.ErrRepositoryNotExists):
 		fmt.Println("Initialising a new git repository...")
-		_, err = git.PlainInit(".", false)
+		_, err = git.PlainInit(path, false)
 		if err != nil {
 			return fmt.Errorf("Failed to initialize git repository: %w", err)
 		}

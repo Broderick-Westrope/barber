@@ -21,12 +21,12 @@ func InitCollection(colPath string) error {
 
 	metadataPath := filepath.Join(colPath, MetadataFilename)
 	if err := initFile(metadataPath, MetadataFile); err != nil {
-		return fmt.Errorf("Failed to initialize '%s' file: %w", metadataPath, err)
+		return fmt.Errorf("Failed to initialize '%s' metadata file: %w", metadataPath, err)
 	}
 
 	configPath := filepath.Join(colPath, ConfigFilename)
 	if err := initFile(configPath, ConfigFile); err != nil {
-		return fmt.Errorf("Failed to initialize '%s' file: %w", configPath, err)
+		return fmt.Errorf("Failed to initialize '%s' config file: %w", configPath, err)
 	}
 
 	return nil

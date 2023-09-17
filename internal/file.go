@@ -164,8 +164,8 @@ func deleteFile(path string, fileType FileType) error {
 func createFile(path string, fileType FileType, context fileContext) error {
 	var srcFile, dstFile *os.File
 	var err error
-
-	assetsPath := "assets"
+	
+	assetPath := filepath.Join(GetBasePath(), "assets")
 
 	switch fileType {
 	case MetadataFile:

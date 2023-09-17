@@ -7,8 +7,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-const MetadataFilename = ".barber.yaml"
-
 type Metadata struct {
 	Snippets []Snippet `yaml:"snippets"`
 }

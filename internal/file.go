@@ -224,7 +224,7 @@ func shouldIgnore(path string) bool {
 	// TODO: add the ability to have a gitignore-like file that will ignore certain paths or directories
 	filename := filepath.Base(path)
 
-	if strings.HasPrefix(filename, ".") || path == metadataFilename || path == configFilename {
+	if strings.HasPrefix(filename, ".") || path == MetadataFilename || path == ConfigFilename {
 		return true
 	}
 	return false

@@ -61,7 +61,7 @@ func Scan(colPath string, shouldKeep, isDryRun bool) error {
 	}
 
 	// Update the metadata
-	err = UpdateMetadata(filepath.Join(colPath, metadataFilename), &files, shouldKeep)
+	err = UpdateMetadata(filepath.Join(colPath, MetadataFilename), &files, shouldKeep)
 	if err != nil {
 		return fmt.Errorf("Failed to update metadata for collection '%s': %v", colPath, err)
 	}

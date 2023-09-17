@@ -16,17 +16,17 @@ const (
 func InitCollection(colPath string) error {
 	// TODO: Provide a config option to disable git repository creation
 	if err := initGitRepo(colPath); err != nil {
-		return fmt.Errorf("Failed to initialize git repository: %w", err)
+		return fmt.Errorf("Failed to initialise git repository: %w", err)
 	}
 
 	metadataPath := filepath.Join(colPath, MetadataFilename)
 	if err := initFile(metadataPath, MetadataFile); err != nil {
-		return fmt.Errorf("Failed to initialize '%s' metadata file: %w", metadataPath, err)
+		return fmt.Errorf("Failed to initialise '%s' metadata file: %w", metadataPath, err)
 	}
 
 	configPath := filepath.Join(colPath, ConfigFilename)
 	if err := initFile(configPath, ConfigFile); err != nil {
-		return fmt.Errorf("Failed to initialize '%s' config file: %w", configPath, err)
+		return fmt.Errorf("Failed to initialise '%s' config file: %w", configPath, err)
 	}
 
 	return nil

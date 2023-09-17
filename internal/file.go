@@ -89,7 +89,7 @@ func DestructiveFileOp(path string, fileType FileType, skipConfirm bool, fileOp 
 // The fileType parameter is used for logging purposes and to determine the default contents of the file. It should be one of the constants defined in this package.
 func initFile(path string, fileType FileType) error {
 	if err := validateFileType(fileType); err != nil {
-		return fmt.Errorf("Failed to initialize file '%s' of type '%s': %w", path, fileType, err)
+		return fmt.Errorf("Failed to initialise file '%s' of type '%s': %w", path, fileType, err)
 	}
 
 	filename := filepath.Base(path)

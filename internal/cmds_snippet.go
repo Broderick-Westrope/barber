@@ -5,6 +5,10 @@ import (
 	"path/filepath"
 )
 
+// AddSnippet adds a snippet to the collection.
+// colPath is the absolute path to the collection.
+// snptPath is the path to the snippet file you want to add to the collection.
+// It is relative to the colPath.
 func AddSnippet(colPath string, snptPath string) error {
 	exists, err := IsCollection(colPath)
 	if err != nil {
@@ -13,11 +17,12 @@ func AddSnippet(colPath string, snptPath string) error {
 		return fmt.Errorf("'%s' is not a collection", colPath)
 	}
 
-	exists, err = FileExists(snptPath)
+	colSnptPath := filepath.Join(colPath, snptPath)
+	exists, err = FileExists(colSnptPath)
 	if err != nil {
-		return fmt.Errorf("Failed to check if '%s' is a file: %v", snptPath, err)
+		return fmt.Errorf("Failed to check if '%s' is a file: %v", colSnptPath, err)
 	} else if !exists {
-		return fmt.Errorf("'%s' is not a file", snptPath)
+		return fmt.Errorf("'%s' is not a file", colSnptPath)
 	}
 
 	metadataPath := filepath.Join(colPath, MetadataFilename)
@@ -27,9 +32,9 @@ func AddSnippet(colPath string, snptPath string) error {
 	}
 
 	newSnippet := Snippet{
-		Path: snptPath,
+		Path:        snptPath,
 		Description: "",
-		Tags: []string{},
+		Tags:        []string{},
 	}
 
 	metadata.Snippets = append(metadata.Snippets, newSnippet)

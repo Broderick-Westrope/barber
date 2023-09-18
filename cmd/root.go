@@ -8,18 +8,17 @@ import (
 )
 
 var (
-	yesFlag bool // skip confirmation prompts
-	collectionFlag  string // path to collection root directory
-	keepFlag bool // keep snippets that are not found in the filesystem
-	dryRunFlag bool // display proposed changes without performing them
+	yesFlag        bool   // skip confirmation prompts
+	collectionFlag string // path to collection root directory
+	keepFlag       bool   // keep snippets that are not found in the filesystem
+	dryRunFlag     bool   // display proposed changes without performing them
 )
 
-// The base command.
-// When called without any subcommands, it will launch interactive mode.
 var rootCmd = &cobra.Command{
 	Use:   "barber",
-	Short: "Barber is a tool for managing snippets",
-	Long: `Barber is a CLI & TUI for managing snippets.
+	Short: "Start interactive mode",
+	Long: `Start interactive mode.
+Barber is a CLI & TUI for managing snippets.
 It is targeted towards code snippets, but can be used for any text format.
 Documentation is available at https://github.com/Broderick-Westrope/barber`,
 	Run: func(cmd *cobra.Command, args []string) {

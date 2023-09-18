@@ -7,11 +7,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// Scans a collection for snippets
 var scanCmd = &cobra.Command{
-	Use:  "scan",
+	Use:     "scan",
 	Aliases: []string{"a"},
-	Short: "Scans a collection for snippets",
+	Short:   "Scans a collection for snippets",
 	Long: `Goes through all paths & directories in the collection, and adds them as snippets to the collection metadata.
 By default, deleted paths & directories will be removed from the metadata. This can be altered with the --keep flag.
 If a file or directory already exists in the collection, it will not be re-added.

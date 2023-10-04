@@ -44,7 +44,7 @@ func AddSnippet(colPath string, snptPath string) error {
 		return fmt.Errorf("Failed to write metadata at '%s': %v", metadataPath, err)
 	}
 
-	fmt.Printf("Added snippet '%s' to collection '%s'", snptPath, colPath)
+	fmt.Printf("Added snippet '%s' to collection '%s'\n", snptPath, colPath)
 	return nil
 }
 

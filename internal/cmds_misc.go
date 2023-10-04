@@ -52,7 +52,7 @@ func Scan(colPath string, shouldKeep, isDryRun bool) error {
 	// Print the collected paths
 	fmt.Printf("Found %d files:\n", len(files))
 	for _, file := range files {
-		fmt.Println("+",file)
+		fmt.Println("+", file)
 	}
 
 	if isDryRun {
@@ -67,5 +67,47 @@ func Scan(colPath string, shouldKeep, isDryRun bool) error {
 	}
 
 	fmt.Println("\nScan complete. Metadata updated.")
+	return nil
+}
+
+func List(colPath string) error {
+	res, err := IsCollection(colPath)
+	if err != nil {
+		return fmt.Errorf("Failed to check if '%s' is a collection: %w", colPath, err)
+	} else if !res {
+		return fmt.Errorf("Cannot list snippets because '%s' is not a collection", colPath)
+	}
+
+	// Read the metadata
+	metadataFilepath := filepath.Join(colPath, MetadataFilename)
+	metadata, err := GetMetadata(metadataFilepath)
+	if err != nil {
+		return fmt.Errorf("Failed to read collection metadata file '%s': %v", metadataFilepath, err)
+	}
+
+	// Print the snippets
+	if len(metadata.Snippets) == 0 {
+		fmt.Println("No snippets found.")
+		return nil
+	}
+
+	fmt.Printf("Found %d snippets:\n", len(metadata.Snippets))
+	for _, snippet := range metadata.Snippets {
+		msg := fmt.Sprintf("  - %s", snippet.Path)
+		if snippet.Description != "" {
+			msg += fmt.Sprintf(" | %s", snippet.Description)
+		}
+		if len(snippet.Tags) > 0 {
+			msg += " | "
+			for i, tag := range snippet.Tags {
+				if i > 0 {
+					msg += ", "
+				}
+				msg += tag
+			}
+		}
+		fmt.Println(msg)
+	}
+
 	return nil
 }

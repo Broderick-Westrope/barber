@@ -61,6 +61,10 @@ func Execute() {
 	scanCmd.Flags().BoolVar(&dryRunFlag, "dry-run", false, "display proposed changes without performing them")
 	rootCmd.AddCommand(scanCmd)
 
+	// List
+	listCmd.Flags().StringVarP(&collectionFlag, "collection", "c", ".", "path to collection root directory")
+	rootCmd.AddCommand(listCmd)
+
 	cobra.CheckErr(rootCmd.Execute())
 }
 

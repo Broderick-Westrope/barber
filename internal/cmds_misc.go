@@ -70,7 +70,7 @@ func Scan(colPath string, shouldKeep, isDryRun bool) error {
 	return nil
 }
 
-func List(colPath string) error {
+func List(colPath string, includeMetadata bool) error {
 	res, err := IsCollection(colPath)
 	if err != nil {
 		return fmt.Errorf("Failed to check if '%s' is a collection: %w", colPath, err)
@@ -94,6 +94,10 @@ func List(colPath string) error {
 	fmt.Printf("Found %d snippets:\n", len(metadata.Snippets))
 	for _, snippet := range metadata.Snippets {
 		msg := fmt.Sprintf("  - %s", snippet.Path)
+		if !includeMetadata {
+			fmt.Println(msg)
+			continue
+		}
 		if snippet.Description != "" {
 			msg += fmt.Sprintf(" | %s", snippet.Description)
 		}

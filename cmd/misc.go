@@ -28,7 +28,7 @@ var listCmd = &cobra.Command{
 	Long: `Lists the relative path of each snippet in a collection by reading the collection metadata file.
 This operation does not make any changes to the collection or its metadata.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		err := internal.List(collectionFlag)
+		err := internal.List(collectionFlag, includeMetadataFlag)
 		if err != nil {
 			fmt.Printf("Error: %s\n", err)
 		}

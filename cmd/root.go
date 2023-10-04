@@ -8,10 +8,11 @@ import (
 )
 
 var (
-	yesFlag        bool   // skip confirmation prompts
-	collectionFlag string // path to collection root directory
-	keepFlag       bool   // keep snippets that are not found in the filesystem
-	dryRunFlag     bool   // display proposed changes without performing them
+	yesFlag             bool   // skip confirmation prompts
+	collectionFlag      string // path to collection root directory
+	keepFlag            bool   // keep snippets that are not found in the filesystem
+	dryRunFlag          bool   // display proposed changes without performing them
+	includeMetadataFlag bool   // include metadata in the output
 )
 
 var rootCmd = &cobra.Command{
@@ -63,6 +64,7 @@ func Execute() {
 
 	// List
 	listCmd.Flags().StringVarP(&collectionFlag, "collection", "c", ".", "path to collection root directory")
+	listCmd.Flags().BoolVar(&includeMetadataFlag, "metadata", false, "include metadata in the output")
 	rootCmd.AddCommand(listCmd)
 
 	cobra.CheckErr(rootCmd.Execute())

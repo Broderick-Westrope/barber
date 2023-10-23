@@ -32,9 +32,9 @@ func AddSnippet(colPath string, snptPath string) error {
 	}
 
 	newSnippet := Snippet{
-		Path:        snptPath,
-		Description: "",
-		Tags:        []string{},
+		Path: snptPath,
+		Desc: "",
+		Tags: []string{},
 	}
 
 	metadata.Snippets = append(metadata.Snippets, newSnippet)

@@ -56,9 +56,9 @@ func TestScan(t *testing.T) {
 	// Test that the metadata is updated
 	metadata, err = internal.GetMetadata(filepath.Join(tempDir, internal.MetadataFilename))
 	expectedSnippet := internal.Snippet{
-		Path:        filepath.Base(filePath),
-		Tags:        []string{},
-		Description: "",
+		Path: filepath.Base(filePath),
+		Tags: []string{},
+		Desc: "",
 	}
 	if !reflect.DeepEqual(metadata.Snippets, []internal.Snippet{expectedSnippet}) {
 		t.Errorf("Metadata Snippets: got %v, want %v", metadata.Snippets, []internal.Snippet{expectedSnippet})

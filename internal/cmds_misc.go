@@ -98,8 +98,8 @@ func List(colPath string, includeMetadata bool) error {
 			fmt.Println(msg)
 			continue
 		}
-		if snippet.Description != "" {
-			msg += fmt.Sprintf(" | %s", snippet.Description)
+		if snippet.Desc != "" {
+			msg += fmt.Sprintf(" | %s", snippet.Desc)
 		}
 		if len(snippet.Tags) > 0 {
 			msg += " | "

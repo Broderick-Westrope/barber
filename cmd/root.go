@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/Broderick-Westrope/barber/internal"
 	"github.com/spf13/cobra"
 )
 
@@ -23,8 +24,10 @@ Barber is a CLI & TUI for managing snippets.
 It is targeted towards code snippets, but can be used for any text format.
 Documentation is available at https://github.com/Broderick-Westrope/barber`,
 	Run: func(cmd *cobra.Command, args []string) {
-		// TODO: Launch interactive mode
-		fmt.Println("Interactive mode not yet implemented")
+		err := internal.RunTUI(collectionFlag)
+		if err != nil {
+			fmt.Printf("Error: %s\n", err)
+		}
 	},
 }
 
@@ -67,6 +70,7 @@ func Execute() {
 	listCmd.Flags().BoolVar(&includeMetadataFlag, "metadata", false, "include metadata in the output")
 	rootCmd.AddCommand(listCmd)
 
+	rootCmd.Flags().StringVarP(&collectionFlag, "collection", "c", ".", "path to collection root directory")
 	cobra.CheckErr(rootCmd.Execute())
 }
 

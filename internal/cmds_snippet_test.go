@@ -66,9 +66,9 @@ func TestAddSnippet(t *testing.T) {
 		t.Fatalf("Failed to get metadata: %v", err)
 	}
 	expectedSnippet := internal.Snippet{
-		Path:        filePathBase,
-		Tags:        []string{},
-		Description: "",
+		Path: filePathBase,
+		Tags: []string{},
+		Desc: "",
 	}
 	if !reflect.DeepEqual(metadata.Snippets, []internal.Snippet{expectedSnippet}) {
 		t.Errorf("Metadata Snippets: got %v, want %v", metadata.Snippets, []internal.Snippet{expectedSnippet})

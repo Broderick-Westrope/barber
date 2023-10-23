@@ -12,9 +12,9 @@ type Metadata struct {
 }
 
 type Snippet struct {
-	Path        string   `yaml:"path"`
-	Description string   `yaml:"description"`
-	Tags        []string `yaml:"tags"`
+	Path string   `yaml:"path"`
+	Desc string   `yaml:"description"`
+	Tags []string `yaml:"tags"`
 }
 
 func GetMetadata(filepath string) (*Metadata, error) {
@@ -85,9 +85,9 @@ func UpdateMetadata(metadataPath string, files *[]string, shouldKeep bool) error
 	for _, file := range *files {
 		if !existingPaths[file] {
 			newSnippet := Snippet{
-				Path:        file,
-				Description: "",
-				Tags:        []string{},
+				Path: file,
+				Desc: "",
+				Tags: []string{},
 			}
 			updatedSnippets = append(updatedSnippets, newSnippet)
 		}

@@ -31,6 +31,14 @@ func (d Directory) FilterValue() string {
 	return d.Path
 }
 
+func GetItems[T list.Item](items []T) []list.Item {
+	dirItems := make([]list.Item, len(items))
+	for i, v := range items {
+		dirItems[i] = list.Item(v)
+	}
+	return dirItems
+}
+
 // Starts the interactive terminal user interface (TUI)
 func RunTUI(colPath string) error {
 	// Get snippets from collection path
@@ -52,18 +60,8 @@ func RunTUI(colPath string) error {
 		}
 	}
 
-	// Create directory & snippet lists
-	snippetItems := make([]list.Item, len(root.Snippets))
-	for i, v := range root.Snippets {
-		snippetItems[i] = list.Item(v)
-	}
-	dirItems := make([]list.Item, len(root.SubDirs))
-	for i, v := range root.SubDirs {
-		dirItems[i] = list.Item(v)
-	}
-
 	// Create & run the tea program
-	m := NewModel(&root, &snippetItems, &dirItems)
+	m := NewModel(&root)
 	p := tea.NewProgram(m, tea.WithAltScreen())
 	var model tea.Model
 	if model, err = p.Run(); err != nil {

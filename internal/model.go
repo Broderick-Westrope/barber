@@ -21,7 +21,10 @@ type Model struct {
 
 type snippetDelegate struct{}
 
-func NewModel(rootDir *Directory, snippetItems, dirItems *[]list.Item) tea.Model {
+func NewModel(rootDir *Directory) tea.Model {
+	snippetItems := GetItems(rootDir.Snippets)
+	dirItems := GetItems(rootDir.SubDirs)
+
 	listDelegate := list.NewDefaultDelegate()
 	listDelegate.ShowDescription = false
 
@@ -29,8 +32,8 @@ func NewModel(rootDir *Directory, snippetItems, dirItems *[]list.Item) tea.Model
 		keys:        DefaultKeyMap,
 		help:        help.New(),
 		currentDir:  rootDir,
-		snippetList: list.New(*snippetItems, listDelegate, 0, 0),
-		dirList:     list.New(*dirItems, listDelegate, 0, 0),
+		snippetList: list.New(snippetItems, listDelegate, 0, 0),
+		dirList:     list.New(dirItems, listDelegate, 0, 0),
 		listStyle:   lipgloss.NewStyle().Margin(1, 2),
 	}
 

@@ -1,13 +1,45 @@
-package internal
+package app
 
 import (
 	"fmt"
 	"io/fs"
 	"path/filepath"
+
+	"github.com/Broderick-Westrope/barber/file"
+	"github.com/Broderick-Westrope/barber/internal"
+	"github.com/spf13/cobra"
 )
 
-func Scan(colPath string, shouldKeep, isDryRun bool) error {
-	res, err := IsCollection(colPath)
+var scanCmd = &cobra.Command{
+	Use:   "scan",
+	Short: "Scans a collection for snippets",
+	Long: `Goes through all paths & directories in the collection, and adds them as snippets to the collection metadata.
+By default, deleted paths & directories will be removed from the metadata. This can be altered with the --keep flag.
+If a file or directory already exists in the collection, it will not be re-added.
+If a file or directory has been renamed or moved, it will attempt to update the entry in the metadata.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		err := scan(collectionFlag, keepFlag, dryRunFlag)
+		if err != nil {
+			fmt.Printf("Error: %s\n", err)
+		}
+	},
+}
+
+var listCmd = &cobra.Command{
+	Use:   "list",
+	Short: "Lists the (relative) path of each snippet in a collection",
+	Long: `Lists the relative path of each snippet in a collection by reading the collection metadata file.
+This operation does not make any changes to the collection or its metadata.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		err := list(collectionFlag, includeMetadataFlag)
+		if err != nil {
+			fmt.Printf("Error: %s\n", err)
+		}
+	},
+}
+
+func scan(colPath string, shouldKeep, isDryRun bool) error {
+	res, err := file.IsCollection(colPath)
 	if err != nil {
 		return fmt.Errorf("Failed to check if '%s' is a collection: %w", colPath, err)
 	} else if !res {
@@ -26,7 +58,7 @@ func Scan(colPath string, shouldKeep, isDryRun bool) error {
 			return nil
 		}
 
-		if shouldIgnore(path) {
+		if internal.ShouldIgnore(path) {
 			if d.IsDir() {
 				return filepath.SkipDir // Skip this directory and all subdirectories
 			}
@@ -61,7 +93,7 @@ func Scan(colPath string, shouldKeep, isDryRun bool) error {
 	}
 
 	// Update the metadata
-	err = UpdateMetadata(filepath.Join(colPath, MetadataFilename), &files, shouldKeep)
+	err = file.UpdateMetadata(filepath.Join(colPath, file.MetadataFilename), &files, shouldKeep)
 	if err != nil {
 		return fmt.Errorf("Failed to update metadata for collection '%s': %v", colPath, err)
 	}
@@ -70,8 +102,8 @@ func Scan(colPath string, shouldKeep, isDryRun bool) error {
 	return nil
 }
 
-func List(colPath string, includeMetadata bool) error {
-	res, err := IsCollection(colPath)
+func list(colPath string, includeMetadata bool) error {
+	res, err := file.IsCollection(colPath)
 	if err != nil {
 		return fmt.Errorf("Failed to check if '%s' is a collection: %w", colPath, err)
 	} else if !res {
@@ -79,8 +111,8 @@ func List(colPath string, includeMetadata bool) error {
 	}
 
 	// Read the metadata
-	metadataFilepath := filepath.Join(colPath, MetadataFilename)
-	metadata, err := GetMetadata(metadataFilepath)
+	metadataFilepath := filepath.Join(colPath, file.MetadataFilename)
+	metadata, err := file.GetMetadata(metadataFilepath)
 	if err != nil {
 		return fmt.Errorf("Failed to read collection metadata file '%s': %v", metadataFilepath, err)
 	}

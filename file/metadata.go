@@ -1,4 +1,4 @@
-package internal
+package file
 
 import (
 	"fmt"
@@ -9,12 +9,6 @@ import (
 
 type Metadata struct {
 	Snippets []Snippet `yaml:"snippets"`
-}
-
-type Snippet struct {
-	Path string   `yaml:"path"`
-	Desc string   `yaml:"description"`
-	Tags []string `yaml:"tags"`
 }
 
 func GetMetadata(filepath string) (*Metadata, error) {

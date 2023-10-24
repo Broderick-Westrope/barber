@@ -1,4 +1,4 @@
-package internal
+package tui
 
 import (
 	"fmt"
@@ -6,25 +6,16 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/Broderick-Westrope/barber/file"
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
 type Directory struct {
 	Path     string
-	Snippets []Snippet
+	Snippets []file.Snippet
 	SubDirs  []Directory
 	Parent   *Directory
-}
-
-func (s Snippet) FilterValue() string {
-	return s.Path
-}
-func (s Snippet) Title() string {
-	return s.Path
-}
-func (s Snippet) Description() string {
-	return ""
 }
 
 func (d Directory) FilterValue() string {
@@ -40,9 +31,9 @@ func GetItems[T list.Item](items []T) []list.Item {
 }
 
 // Starts the interactive terminal user interface (TUI)
-func RunTUI(colPath string) error {
+func Run(colPath string) error {
 	// Get snippets from collection path
-	metadata, err := GetMetadata(filepath.Join(colPath, MetadataFilename))
+	metadata, err := file.GetMetadata(filepath.Join(colPath, file.MetadataFilename))
 	if err != nil {
 		return err
 	}
@@ -79,7 +70,7 @@ func RunTUI(colPath string) error {
 	return nil
 }
 
-func addSnippetToDir(root *Directory, snippet Snippet) error {
+func addSnippetToDir(root *Directory, snippet file.Snippet) error {
 	// Check that the snippet is actually a file
 	fileInfo, err := os.Stat(snippet.Path)
 	switch {

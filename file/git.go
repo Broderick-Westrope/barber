@@ -1,4 +1,4 @@
-package internal
+package file
 
 import (
 	"errors"
@@ -8,7 +8,7 @@ import (
 )
 
 // Checks if a git repository exists at the path, if not, it will initialise a new one.
-func initGitRepo(path string) error {
+func InitGitRepo(path string) error {
 	_, err := git.PlainOpen(path)
 	switch {
 	case errors.Is(err, git.ErrRepositoryNotExists):

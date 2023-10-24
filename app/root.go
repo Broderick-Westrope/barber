@@ -1,10 +1,10 @@
-package cmds
+package app
 
 import (
 	"fmt"
 	"log"
 
-	"github.com/Broderick-Westrope/barber/internal"
+	"github.com/Broderick-Westrope/barber/tui"
 	"github.com/spf13/cobra"
 )
 
@@ -24,7 +24,7 @@ Barber is a CLI & TUI for managing snippets.
 It is targeted towards code snippets, but can be used for any text format.
 Documentation is available at https://github.com/Broderick-Westrope/barber`,
 	Run: func(cmd *cobra.Command, args []string) {
-		err := internal.RunTUI(collectionFlag)
+		err := tui.Run(collectionFlag)
 		if err != nil {
 			fmt.Printf("Error: %s\n", err)
 		}

@@ -1,7 +1,7 @@
 package main
 
-import "github.com/Broderick-Westrope/barber/cmds"
+import "github.com/Broderick-Westrope/barber/app"
 
 func main() {
-	cmds.Execute()
+	app.Execute()
 }

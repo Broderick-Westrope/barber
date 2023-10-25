@@ -4,3 +4,17 @@
 [git]
 auto_commit = true
 auto_init = true
+
+# Style/theme options
+[style]
+primary_color = "#AFBEE1"
+primary_color_subdued = "#64708D"
+bright_green = "#BCE1AF"
+green = "#527251"
+bright_red = "#E49393"
+red = "#A46060"
+foreground =  "15"
+background =  "235"
+gray =  "241"
+black = "#373b41"
+white = "#FFFFFF"

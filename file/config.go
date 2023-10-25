@@ -11,32 +11,40 @@ import (
 const appPath = "app"
 
 // gitConfig is the configuration for a git repository.
-type gitConfig struct {
+type GitConfig struct {
 	AutoInit   bool `toml:"auto_init"`
 	AutoCommit bool `toml:"auto_commit"`
 }
 
 // collectionConfig is the configuration for a collection.
-type collectionConfig struct {
-	Git gitConfig `toml:"git"`
+type CollectionConfig struct {
+	Git   GitConfig   `toml:"git"`
+	Style StyleConfig `toml:"style"`
+}
+
+// styleConfig is the configuration for the style of the application.
+type StyleConfig struct {
+	PrimaryColor        string `toml:"primary_color"`
+	PrimaryColorSubdued string `toml:"primary_color_subdued"`
+	BrightGreenColor    string `toml:"bright_green"`
+	GreenColor          string `toml:"green"`
+	BrightRedColor      string `toml:"bright_red"`
+	RedColor            string `toml:"red"`
+	ForegroundColor     string `toml:"foreground"`
+	BackgroundColor     string `toml:"background"`
+	GrayColor           string `toml:"gray"`
+	BlackColor          string `toml:"black"`
+	WhiteColor          string `toml:"white"`
 }
 
 // Config is the main configuration struct.
 // It contains all the configuration options at the application and collection level.
 type Config struct {
-	Collection collectionConfig `toml:"collection"`
+	Collection CollectionConfig `toml:"collection"`
 }
 
 func GetConfig(collectionPath string) (*Config, error) {
-	// Set default values
-	cfg := &Config{
-		Collection: collectionConfig{
-			Git: gitConfig{
-				AutoInit:   true,
-				AutoCommit: true,
-			},
-		},
-	}
+	cfg := DefaultConfig()
 
 	// Read app config file
 	// TODO: Replace with a constant for the config file name
@@ -62,4 +70,30 @@ func GetConfig(collectionPath string) (*Config, error) {
 	}
 
 	return cfg, nil
+}
+
+// TODO: Make private after fixing config functionality
+func DefaultConfig() *Config {
+	// Set default values
+	return &Config{
+		Collection: CollectionConfig{
+			Git: GitConfig{
+				AutoInit:   true,
+				AutoCommit: true,
+			},
+			Style: StyleConfig{ // TODO: Revisit the default colors
+				PrimaryColor:        "#AFBEE1",
+				PrimaryColorSubdued: "#64708D",
+				BrightGreenColor:    "#BCE1AF",
+				GreenColor:          "#527251",
+				BrightRedColor:      "#E49393",
+				RedColor:            "#A46060",
+				ForegroundColor:     "15",
+				BackgroundColor:     "235",
+				GrayColor:           "241",
+				BlackColor:          "#373b41",
+				WhiteColor:          "#FFFFFF",
+			},
+		},
+	}
 }

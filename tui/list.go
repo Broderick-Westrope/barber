@@ -10,7 +10,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-func newSnippetList(items []list.Item, height int, styles *snippetBaseStyle) *list.Model {
+func newSnippetList(items []list.Item, height int, styles *snippetStyle) *list.Model {
 	snippetList := list.New(items, snippetDelegate{styles: styles}, 25, height)
 	snippetList.SetShowHelp(false)
 	snippetList.SetShowFilter(false)
@@ -25,7 +25,7 @@ func newSnippetList(items []list.Item, height int, styles *snippetBaseStyle) *li
 }
 
 type snippetDelegate struct {
-	styles *snippetBaseStyle
+	styles *snippetStyle
 }
 
 func (d snippetDelegate) Height() int {

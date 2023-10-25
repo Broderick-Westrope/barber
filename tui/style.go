@@ -6,16 +6,16 @@ import (
 )
 
 type styles struct {
-	Snippet snippetStyle
+	Snippet snippetPaneStyles
 }
 
 // Contains the style structs for the snippets pane when it is focused and unfocused.
-type snippetStyle struct {
-	Focused snippetBaseStyle
+type snippetPaneStyles struct {
+	Focused snippetStyle
 }
 
 // Contains styles for each element of the snippets pane.
-type snippetBaseStyle struct {
+type snippetStyle struct {
 	SelectedTitle      lipgloss.Style
 	UnselectedTitle    lipgloss.Style
 	SelectedSubtitle   lipgloss.Style
@@ -36,8 +36,8 @@ func defaultStyles(config *file.Config) *styles {
 	// brightRed := lipgloss.Color(config.Collection.Style.BrightRedColor)
 
 	return &styles{
-		Snippet: snippetStyle{
-			Focused: snippetBaseStyle{
+		Snippet: snippetPaneStyles{
+			Focused: snippetStyle{
 				SelectedTitle:      lipgloss.NewStyle().Foreground(brightBlue),
 				UnselectedTitle:    lipgloss.NewStyle().Foreground(gray),
 				SelectedSubtitle:   lipgloss.NewStyle().Foreground(blue),

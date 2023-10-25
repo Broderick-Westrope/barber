@@ -49,9 +49,25 @@ func (d snippetDelegate) Render(w io.Writer, m list.Model, index int, item list.
 		return
 	}
 
+	printTags := func(style lipgloss.Style) {
+		if len(s.Tags) == 0 {
+			return
+		}
+		tags := ""
+		for _, tag := range s.Tags {
+			if tags != "" {
+				tags += ", "
+			}
+			tags += tag
+		}
+		fmt.Fprintln(w, style.Render(tags))
+	}
+
 	if index == m.Index() {
 		fmt.Fprintln(w, d.styles.SelectedTitle.Render(s.Path))
+		printTags(d.styles.SelectedSubtitle)
 		return
 	}
 	fmt.Fprintln(w, d.styles.UnselectedTitle.Render(s.Path))
+	printTags(d.styles.UnselectedSubtitle)
 }

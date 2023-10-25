@@ -42,7 +42,10 @@ func (m *Model) Init() tea.Cmd {
 func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		if key.Matches(msg, m.keys.Quit) {
+		switch {
+		case key.Matches(msg, m.keys.Help):
+			m.help.ShowAll = !m.help.ShowAll
+		case key.Matches(msg, m.keys.Quit):
 			return m, tea.Quit
 		}
 	case tea.WindowSizeMsg:

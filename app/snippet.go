@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 
 	"github.com/Broderick-Westrope/barber/file"
@@ -89,7 +90,24 @@ func addSnippet(colPath string, snptPath string) error {
 		return fmt.Errorf("Failed to write metadata at '%s': %v", metadataPath, err)
 	}
 
-	fmt.Printf("Added snippet '%s' to collection '%s'\n", snptPath, colPath)
+	// Print the relative path to the collection from the user's home directory.
+	msg := fmt.Sprintf("Added snippet '%s' to collection '%s'\n", snptPath, "%s")
+	fullPath, err := os.UserHomeDir()
+	if err != nil {
+		fmt.Printf(msg, colPath)
+		return nil
+	}
+	absPath, err := filepath.Abs(colPath)
+	if err != nil {
+		fmt.Printf(msg, colPath)
+		return nil
+	}
+	fullPath, err = filepath.Rel(fullPath, absPath)
+	if err != nil {
+		fmt.Printf(msg, colPath)
+		return nil
+	}
+	fmt.Printf(msg, fullPath)
 	return nil
 }
 

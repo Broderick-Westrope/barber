@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"github.com/Broderick-Westrope/barber/file"
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
@@ -13,31 +14,23 @@ type Model struct {
 	help help.Model
 
 	currentDir  *Directory
-	dirList     list.Model
 	snippetList list.Model
 
 	listStyle lipgloss.Style
 }
 
-type snippetDelegate struct{}
-
 func NewModel(rootDir *Directory) tea.Model {
 	snippetItems := GetItems(rootDir.Snippets)
-	dirItems := GetItems(rootDir.SubDirs)
 
-	listDelegate := list.NewDefaultDelegate()
-	listDelegate.ShowDescription = false
+	styles := defaultStyles(file.DefaultConfig())
 
 	m := &Model{
 		keys:        DefaultKeyMap,
 		help:        help.New(),
 		currentDir:  rootDir,
-		snippetList: list.New(snippetItems, listDelegate, 0, 0),
-		dirList:     list.New(dirItems, listDelegate, 0, 0),
+		snippetList: *newSnippetList(snippetItems, 2, &styles.Snippet.Focused),
 		listStyle:   lipgloss.NewStyle().Margin(1, 2),
 	}
-
-	m.snippetList.Title = "Snippets"
 
 	return m
 }
@@ -64,7 +57,6 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m *Model) View() string {
 	panes := lipgloss.JoinHorizontal(lipgloss.Left,
-		m.dirList.View(),
 		m.snippetList.View())
 
 	return lipgloss.JoinVertical(lipgloss.Top,

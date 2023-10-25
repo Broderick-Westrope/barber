@@ -75,6 +75,7 @@ func addSnippetToDir(root *Directory, snippet file.Snippet) error {
 	fileInfo, err := os.Stat(snippet.Path)
 	switch {
 	case err != nil:
+		// TODO: Ask the user if they would like to attempt to do an auto-scan to amend the metadata
 		return err
 	case fileInfo.IsDir():
 		return fmt.Errorf("snippet %s is a directory", snippet.Path)
